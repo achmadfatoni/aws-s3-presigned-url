@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+from botocore.config import Config
 from datetime import datetime, timedelta
 
 print('Generate presign url...')
@@ -9,7 +10,9 @@ BUCKET_NAME = 'bucket-name-here'
 OBJECT_KEY = 'file-name-here'
 
 # Create a Boto3 S3 client
-s3_client = boto3.client('s3')
+s3_client = boto3.client('s3', config=Config(
+     signature_version = 'v4',
+))
 
 # Generate a pre-signed URL for the S3 object that will expire in 1 hour
 expiration = datetime.now() + timedelta(hours=1)
